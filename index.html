@@ -1,0 +1,1204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Frames of Emotion — From Ground to Sky</title>
+  <style>
+    /* Basic Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{font-family:Inter, Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:#070707;color:#f3f3f3;line-height:1.45}
+
+    /* Utility */
+    .container{width:min(1200px,94%);margin:0 auto}
+    h1,h2,h3{font-family:'Playfair Display', 'Georgia', serif;margin-bottom:.5rem}
+    p{color:#e2e2e2}
+
+    /* ============ HERO SLIDER - ADVANCED VIDEO ============ */
+    .hero{
+      position:relative;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:#000;
+    }
+
+    .hero .slide{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:opacity .9s ease, transform 5s ease;
+      opacity:1;
+    }
+
+    .hero .slide.hidden{
+      opacity:0;
+      pointer-events:none;
+      transform:scale(1.03);
+    }
+
+    .hero .slide video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:brightness(.55) saturate(1.1) contrast(1.05);
+      transform:scale(1.06);
+      transition:transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      mix-blend-mode:normal;
+      pointer-events:none;
+    }
+
+    .hero .slide:not(.hidden) video{
+      transform:scale(1.02);
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top left, rgba(217,183,107,.25), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(0,0,0,.8), transparent 50%);
+      mix-blend-mode:soft-light;
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.75));
+      pointer-events:none;
+      z-index:3;
+    }
+
+    .hero .overlay{
+      position:relative;
+      z-index:5;
+      text-align:center;
+      padding:2rem;
+      animation:fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(30px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .hero h1{
+      font-size:3.5rem;
+      letter-spacing:2px;
+      margin-bottom:.5rem;
+      font-weight:700;
+      text-shadow:0 2px 20px rgba(0,0,0,.8);
+      animation:slideDown .8s ease-out;
+    }
+
+    @keyframes slideDown{
+      from{opacity:0;transform:translateY(-40px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    .hero p.lead{
+      font-style:italic;
+      color:#e6d9b5;
+      margin-bottom:1.3rem;
+      font-size:1.2rem;
+      text-shadow:0 1px 10px rgba(0,0,0,.7);
+      animation:fadeIn 1.2s ease-out .3s both;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    .cta-row{
+      display:inline-flex;
+      gap:.8rem;
+      animation:fadeIn 1.4s ease-out .6s both;
+    }
+
+    .btn{
+      border-radius:28px;
+      padding:.9rem 1.6rem;
+      border:0;
+      font-weight:600;
+      cursor:pointer;
+      transition:all .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      font-size:1rem;
+    }
+
+    .btn.primary{
+      background:#d9b76b;
+      color:#070707;
+      box-shadow:0 8px 24px rgba(217,183,107,.3);
+    }
+
+    .btn.primary:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 32px rgba(217,183,107,.5);
+    }
+
+    .btn.primary:active{
+      transform:translateY(-1px);
+    }
+
+    .btn.ghost{
+      background:transparent;
+      border:2px solid rgba(217,183,107,.9);
+      color:#d9b76b;
+    }
+
+    .btn.ghost:hover{
+      background:rgba(217,183,107,.1);
+      box-shadow:0 0 20px rgba(217,183,107,.4);
+    }
+
+    /* Cinematic floating particles */
+    .particle{
+      position:absolute;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(217,183,107,.25), transparent 60%);
+      box-shadow:0 0 60px rgba(217,183,107,.35);
+      filter:blur(1px);
+      animation:floatParticle 16s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatParticle{
+      0%{transform:translate3d(0,0,0) scale(1);opacity:.15}
+      100%{transform:translate3d(25px,-40px,0) scale(1.2);opacity:.35}
+    }
+
+    /* ============ ABOUT SECTION ============ */
+    section.about{
+      padding:6rem 0;
+      background:linear-gradient(180deg, #070707 0%, #0c0b0b 100%);
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:2.5rem;
+      align-items:center;
+    }
+
+    .portrait{
+      width:100%;
+      height:420px;
+      border-radius:18px;
+      background:#1a1a1a;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#888;
+      font-size:14px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      border:1px solid rgba(217,183,107,.15);
+    }
+
+    .portrait img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .about .meta{
+      color:#d9d9d9;
+    }
+
+    .about .meta h2{
+      color:#d9b76b;
+      font-size:2.2rem;
+      margin-bottom:1.5rem;
+    }
+
+    .about .meta p{
+      margin-bottom:1rem;
+      line-height:1.7;
+      font-size:1.05rem;
+    }
+
+    .about .meta .quote{
+      font-style:italic;
+      color:#e6d9b5;
+      margin:1.5rem 0;
+      padding-left:1.5rem;
+      border-left:3px solid #d9b76b;
+      font-size:1.1rem;
+    }
+
+    .timeline{
+      display:flex;
+      gap:1rem;
+      margin-top:1.5rem;
+      flex-wrap:wrap;
+    }
+
+    .timeline .item{
+      background:linear-gradient(135deg, rgba(217,183,107,.12), rgba(217,183,107,.06));
+      padding:.8rem 1.2rem;
+      border-radius:10px;
+      border:1px solid rgba(217,183,107,.25);
+      font-size:.95rem;
+      font-weight:500;
+    }
+
+    /* ============ PORTFOLIO HUB ============ */
+    .portfolio{
+      padding:5rem 0;
+      background:#080808;
+    }
+
+    .portfolio h2{
+      color:#d9b76b;
+      margin-bottom:1rem;
+      font-size:2.2rem;
+    }
+
+    .modes{
+      display:flex;
+      gap:.6rem;
+      margin-bottom:1.4rem;
+      flex-wrap:wrap;
+    }
+
+    .mode{
+      padding:.6rem 1.2rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.06);
+      cursor:pointer;
+      background:transparent;
+      color:#e2e2e2;
+      font-weight:600;
+      transition:all .3s ease;
+    }
+
+    .mode:hover{
+      border-color:rgba(217,183,107,.6);
+      background:rgba(217,183,107,.08);
+    }
+
+    .mode.active{
+      background:rgba(217,183,107,.15);
+      border-color:rgba(217,183,107,.9);
+      color:#d9b76b;
+      box-shadow:0 0 20px rgba(217,183,107,.3);
+    }
+
+    /* Slideshow with transitions */
+    .slideshow-container{
+      position:relative;
+      height:520px;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      background:#111;
+    }
+
+    .slideshow-item{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 0.5s ease;
+    }
+
+    .slideshow-item.active{
+      opacity:1;
+    }
+
+    .slideshow-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .slideshow-nav{
+      position:absolute;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:10px;
+      z-index:10;
+    }
+
+    .slideshow-dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:rgba(255,255,255,.4);
+      cursor:pointer;
+      transition:all .3s ease;
+      border:2px solid rgba(217,183,107,.5);
+    }
+
+    .slideshow-dot.active{
+      background:#d9b76b;
+      transform:scale(1.3);
+    }
+
+    .modes{
+      display:flex;
+      gap:.6rem;
+      margin-bottom:1.4rem;
+      flex-wrap:wrap;
+    }
+
+    .mode{
+      padding:.6rem 1.2rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.06);
+      cursor:pointer;
+      background:transparent;
+      color:#e2e2e2;
+      font-weight:600;
+      transition:all 2.3s ease;
+    }
+
+    .mode:hover{
+      border-color:rgba(217,183,107,.6);
+      background:rgba(217,183,107,.08);
+    }
+
+    .mode.active{
+      background:rgba(217,183,107,.15);
+      border-color:rgba(217,183,107,.9);
+      color:#d9b76b;
+      box-shadow:0 0 20px rgba(217,183,107,.3);
+    }
+
+    /* Slideshow with transitions */
+    .slideshow-container{
+      position:relative;
+      height:520px;
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      background:#111;
+    }
+
+    .slideshow-item{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 0.7s ease;
+    }
+
+    .slideshow-item.active{
+      opacity:1;
+    }
+
+    .slideshow-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .slideshow-nav{
+      position:absolute;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      gap:10px;
+      z-index:10;
+    }
+
+    .slideshow-dot{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:rgba(255,255,255,.4);
+      cursor:pointer;
+      transition:all .3s ease;
+      border:2px solid rgba(217,183,107,.5);
+    }
+
+    .slideshow-dot.active{
+      background:#d9b76b;
+      transform:scale(1.3);
+    }
+
+    /* Grid gallery */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+      animation:fadeIn .6s ease-out;
+    }
+
+    .card{
+      position:relative;
+      height:230px;
+      border-radius:12px;
+      overflow:hidden;
+      background:#111;
+      display:flex;
+      align-items:flex-end;
+      padding:14px;
+      color:#fff;
+      cursor:pointer;
+      transition:transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow .4s ease;
+      group:hover & {transform:scale(1.05)}
+    }
+
+    .card:hover{
+      transform:scale(1.05);
+      box-shadow:0 15px 40px rgba(217,183,107,.25);
+    }
+
+    .card img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .5s ease;
+    }
+
+    .card:hover img{
+      transform:scale(1.08);
+    }
+
+    .card .caption{
+      position:relative;
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,.85));
+      width:100%;
+      padding:.8rem;
+      border-radius:8px;
+      font-weight:600;
+      font-size:1rem;
+    }
+
+    /* FPV Mode */
+    .fpv{
+      height:520px;
+      border-radius:14px;
+      background:linear-gradient(180deg, #0b0b0b, #121212);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#888;
+      animation:fadeIn .6s ease-out;
+    }
+
+    .fpv img{
+      max-width:90%;
+      height:auto;
+      border-radius:10px;
+      box-shadow:0 20px 60px rgba(0,0,0,.7);
+    }
+
+    /* Slideshow */
+    .slideshow img{
+      width:100%;
+      height:420px;
+      object-fit:cover;
+      border-radius:12px;
+      box-shadow:0 20px 60px rgba(0,0,0,.6);
+      animation:fadeIn .6s ease-out;
+    }
+
+    /* ============ FEATURED STORY ============ */
+    .story{
+      padding:6rem 0;
+      background:linear-gradient(180deg, #080808, #070707);
+    }
+
+    .story h2{
+      color:#d9b76b;
+      font-size:2.2rem;
+      margin-bottom:2rem;
+    }
+
+    .story .hero-img{
+      width:100%;
+      height:520px;
+      border-radius:12px;
+      background:#111;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#777;
+      overflow:hidden;
+      box-shadow:0 25px 70px rgba(0,0,0,.8);
+      margin-bottom:2rem;
+    }
+
+    .story .hero-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .story .copy{
+      max-width:900px;
+      margin:1.5rem auto;
+      text-align:center;
+      padding:0 2rem;
+    }
+
+    .story .copy p{
+      font-size:1.15rem;
+      line-height:1.8;
+      color:#e2e2e2;
+    }
+
+    /* ============ BEHIND THE SCENES ============ */
+    .bts{
+      padding:4rem 0;
+      background:#070707;
+    }
+
+    .bts h2{
+      color:#d9b76b;
+      margin-bottom:1.5rem;
+      font-size:2.2rem;
+    }
+
+    .bts-grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
+    }
+
+    .bts-item{
+      height:160px;
+      border-radius:10px;
+      background:#111;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#999;
+      overflow:hidden;
+      transition:transform .4s ease, box-shadow .4s ease;
+      cursor:pointer;
+    }
+
+    .bts-item:hover{
+      transform:scale(1.05);
+      box-shadow:0 10px 30px rgba(217,183,107,.2);
+    }
+
+    .bts-item img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .5s ease;
+    }
+
+    .bts-item:hover img{
+      transform:scale(1.1);
+    }
+
+    /* ============ SERVICES ============ */
+    .services{
+      padding:5rem 0;
+      background:linear-gradient(180deg, #060606, #0b0b0b);
+    }
+
+    .services h2{
+      text-align:center;
+      color:#d9b76b;
+      margin-bottom:2rem;
+      font-size:2.2rem;
+    }
+
+    .packs{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:20px;
+      margin-bottom:1rem;
+    }
+
+    .pack{
+      background:linear-gradient(135deg, rgba(217,183,107,.08), rgba(217,183,107,.03));
+      padding:2rem;
+      border-radius:12px;
+      border:1px solid rgba(217,183,107,.2);
+      transition:all .4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .pack:hover{
+      background:linear-gradient(135deg, rgba(217,183,107,.15), rgba(217,183,107,.08));
+      border-color:rgba(217,183,107,.5);
+      box-shadow:0 10px 35px rgba(217,183,107,.15);
+      transform:translateY(-5px);
+    }
+
+    .pack h3{
+      color:#d9b76b;
+      font-size:1.3rem;
+      margin-bottom:1rem;
+    }
+
+    .pack p{
+      color:#d9d9d9;
+      line-height:1.6;
+    }      @media (max-width:900px){
+      .packs{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .contact-info{
+        border-left:none;
+        border-top:1px solid rgba(217,183,107,.15);
+        padding-top:1rem;
+        margin-top:1rem;
+      }
+    }
+
+    @media (max-width:520px){
+      .packs{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* ============ MAP ============ */
+    .map-section{
+      padding:3rem 0;
+    }
+
+    .map-section h2{
+      color:#d9b76b;
+      margin-bottom:1.5rem;
+      font-size:2rem;
+    }
+
+    .map{
+      height:360px;
+      border-radius:12px;
+      background:linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#666;
+      border:1px solid rgba(217,183,107,.15);
+      font-size:1.1rem;
+      font-weight:500;
+    }
+
+    /* ============ CONTACT ============ */
+    .contact{
+      padding:6rem 0;
+      background:linear-gradient(180deg, #060606, #0b0b0b);
+    }
+
+    .contact h2{
+      text-align:center;
+      color:#d9b76b;
+      margin-bottom:1rem;
+      font-size:2.2rem;
+    }
+
+    .contact > p{
+      text-align:center;
+      color:#e6e6e6;
+      margin-bottom:2rem;
+      font-size:1.05rem;
+    }
+
+    .contact .panel{
+      max-width:900px;
+      margin:0 auto;
+      background:rgba(255,255,255,.02);
+      backdrop-filter:blur(10px);
+      padding:2.5rem;
+      border-radius:14px;
+      display:grid;
+      grid-template-columns:1fr 380px;
+      gap:1.4rem;
+      border:1px solid rgba(217,183,107,.15);
+      box-shadow:0 25px 50px rgba(0,0,0,.5);
+    }
+
+    .contact .left{
+      padding:1rem;
+    }
+
+    .contact label{
+      display:block;
+      margin:.8rem 0 .4rem 0;
+      color:#e6e6e6;
+      font-size:.95rem;
+      font-weight:600;
+    }
+
+    .contact input,
+    .contact select,
+    .contact textarea{
+      width:100%;
+      padding:1rem;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(15,15,15,.8);
+      color:#eee;
+      font-family:inherit;
+      font-size:1rem;
+      transition:all .3s ease;
+      margin-bottom:.6rem;
+    }
+
+    .contact input:focus,
+    .contact select:focus,
+    .contact textarea:focus{
+      outline:none;
+      border-color:rgba(217,183,107,.6);
+      background:rgba(15,15,15,.95);
+      box-shadow:0 0 20px rgba(217,183,107,.2);
+    }
+
+    .contact textarea{
+      resize:vertical;
+      margin-bottom:1rem;
+    }
+
+    .contact .submit{
+      width:100%;
+      background:#d9b76b;
+      border:0;
+      padding:1rem;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      color:#070707;
+      font-size:1rem;
+      transition:all .3s ease;
+      box-shadow:0 8px 24px rgba(217,183,107,.3);
+    }
+
+    .contact .submit:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 32px rgba(217,183,107,.5);
+    }
+
+    .contact .submit:active{
+      transform:translateY(0);
+    }
+
+    .contact .right{
+      padding:1rem;
+      border-left:1px solid rgba(217,183,107,.15);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .contact-info{
+      display:flex;
+      flex-direction:column;
+      gap:1.5rem;
+      padding:1rem;
+      border-left:1px solid rgba(217,183,107,.15);
+    }
+
+    .contact-method{
+      display:flex;
+      flex-direction:column;
+      gap:.5rem;
+    }
+
+    .contact-method label{
+      color:#d9b76b;
+      font-weight:700;
+      font-size:.9rem;
+      text-transform:uppercase;
+      letter-spacing:.5px;
+    }
+
+    .contact-method a{
+      color:#e6d9b5;
+      text-decoration:none;
+      font-weight:600;
+      transition:all .3s ease;
+      word-break:break-all;
+    }
+
+    .contact-method a:hover{
+      color:#d9b76b;
+    }
+
+    /* ============ FOOTER ============ */
+    footer{
+      padding:3rem 0;
+      text-align:center;
+      color:#9b9b9b;
+      border-top:1px solid rgba(217,183,107,.1);
+      background:#070707;
+    }
+
+    footer p{
+      margin:.6rem 0;
+      font-size:.95rem;
+    }
+
+    footer p:first-child{
+      font-style:italic;
+      color:#d9b76b;
+      font-size:1.05rem;
+    }
+
+    footer small{
+      color:#7f7f7f;
+    }
+
+    footer a{
+      color:#d9b76b;
+      text-decoration:none;
+      transition:color .3s ease;
+    }
+
+    footer a:hover{
+      color:#e6d9b5;
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width:900px){
+      .split{
+        grid-template-columns:1fr;
+      }
+      .grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .bts-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .contact .panel{
+        grid-template-columns:1fr;
+      }
+      .contact .right{
+        border-left:none;
+        border-top:1px solid rgba(217,183,107,.15);
+        padding-top:1rem;
+        margin-top:1rem;
+      }
+      .packs{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .cta-row{
+        flex-direction:column;
+        gap:1rem;
+      }
+      .btn{
+        width:100%;
+      }
+      .hero h1{
+        font-size:2.5rem;
+      }
+    }
+
+    @media (max-width:520px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+      .bts-grid{
+        grid-template-columns:repeat(2, 1fr);
+      }
+      .packs{
+        grid-template-columns:1fr;
+      }
+      .hero h1{
+        font-size:2rem;
+      }
+      .hero p.lead{
+        font-size:1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" aria-label="Hero cinematic showcase">
+    <!-- Slide 1 -->
+    <div class="slide" id="slide1">
+      <video
+        src="videos/3703474-hd_1920_1080_30fps.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide hidden" id="slide2">
+      <video
+        src="videos/2833833-uhd_3840_2160_30fps.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide hidden" id="slide3">
+      <video
+        src="videos/857268-uhd_4096_2160_24fps.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+      ></video>
+    </div>
+
+    <div class="overlay">
+      <h1>Frames of Emotion</h1>
+      <p class="lead">"Moments vanish - Memories don't. I capture both."</p>
+      <div class="cta-row">
+        <button class="btn primary" onclick="document.getElementById('portfolio').scrollIntoView({behavior:'smooth'})">View My Story</button>
+        <button class="btn ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Begin Your Story</button>
+      </div>
+    </div>
+
+    <!-- cinematic particles (decorative) -->
+    <div class="particle" style="width:140px;height:140px;left:6%;top:18%;opacity:.2"></div>
+    <div class="particle" style="width:90px;height:90px;right:8%;bottom:22%;opacity:.18"></div>
+  </header>
+
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about container" id="about">
+    <div class="split">
+      <div class="portrait"><img src="images/chiru.jpg" alt="Your Portrait / Studio Shot"></div>
+      <div class="meta">
+        <h2>About — The Artist & The Sky</h2>
+        <p>I'm <strong>Chiranjeevi (Chiru Sunny)</strong>, a photographer and drone storyteller crafting cinematic visuals for weddings, events, and personal celebrations. My approach blends intimate human stories with expansive aerial perspectives to create frames that feel alive.</p>
+        <p class="quote">"I don't take photos. I preserve feelings."</p>
+
+        <div class="timeline">
+          <div class="item">Started: 2012</div>
+          <div class="item">First Drone Flight: 2016</div>
+          <div class="item">100+ Events</div>
+          <div class="item">Destination Shoots</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ PORTFOLIO HUB ============ -->
+  <section class="portfolio container" id="portfolio">
+    <h2>Portfolio Hub</h2>
+    <div class="modes">
+      <div class="mode active" data-mode="grid" onclick="setMode('grid',this)">Classic Gallery</div>
+      <div class="mode" data-mode="slideshow" onclick="setMode('slideshow',this)">Cinematic Slideshow</div>
+    </div>
+
+    <!-- GRID -->
+    <div id="mode-grid" class="grid" aria-hidden="false">
+      <div class="card"><img src="images/couple 1.jpg" alt="Wedding - Sunset"></div>
+      <div class="card"><img src="images/m 3.jpg" alt="Pre-wedding - Forest"></div>
+      <div class="card"><img src="images/SMD07026.JPG" alt="Birthday - Candid"></div>
+      <div class="card"><img src="images/marriage 1.jpg" alt="Corporate - Evening"></div>
+      <div class="card"><img src="images/SMD07098.JPG" alt="Drone - Coastal"></div>
+      <div class="card"><img src="images/SMD07039.JPG" alt="Drone - Festival"></div>
+    </div>
+
+    <!-- SLIDESHOW -->
+    <div id="mode-slideshow" style="display:none;margin-top:18px" aria-hidden="true">
+      <div class="slideshow-container">
+        <div class="slideshow-item active">
+          <img src="images/marriage 1.jpg" alt="Cinematic Moment 1">
+        </div>
+        <div class="slideshow-item">
+          <img src="images/SMD07026.JPG" alt="Cinematic Moment 2">
+        </div>
+        <div class="slideshow-item">
+          <img src="images/SMD07150.JPG" alt="Cinematic Moment 3">
+        </div>
+        <div class="slideshow-item">
+          <img src="images/SMD07141.JPG" alt="Cinematic Moment 4">
+        </div>
+        <div class="slideshow-item">
+          <img src="images/SMD07039.JPG" alt="Cinematic Moment 5">
+        </div>
+        <div class="slideshow-item">
+          <img src="images/marriage 2.jpg" alt="Cinematic Moment 6">
+        </div>
+        <div class="slideshow-nav" id="slideshowNav"></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ FEATURED STORY ============ -->
+  <section class="story container">
+    <h2>A Day of Magic — Editorial</h2>
+    <div class="hero-img"><img src="images/m 3.jpg" alt="Featured Wedding"></div>
+    <div class="copy">
+      <p>"The ocean sang softly as they promised forever. I framed every laugh, every tear, and the hush of the horizon — so they can return to the moment whenever they want."</p>
+    </div>
+  </section>
+
+
+  
+
+
+  <!-- ============ SERVICES ============ -->
+  <section class="services container">
+    <h2>Services — Choose Your Story</h2>
+    <div class="packs">
+      <div class="pack">
+        <h3>Wedding Photography</h3>
+        <p>Full-day coverage, candid storytelling, highlight film, album, and cinematic video edit.</p>
+      </div>
+      <div class="pack">
+        <h3>Pre-Wedding Shoots</h3>
+        <p>Location scouting, styled shoots, cinematic direction, couple portraits, and short film.</p>
+      </div>
+      <div class="pack">
+        <h3>Birthday & Events</h3>
+        <p>Candid moments, group shots, decorative details, highlight reel, and curated digital album.</p>
+      </div>
+      <div class="pack">
+        <h3>Post-Wedding Coverage</h3>
+        <p>Reception highlights, dance moments, family portraits, emotional captures, and same-day edit.</p>
+      </div>
+      <div class="pack">
+        <h3>Drone Cinematography</h3>
+        <p>Aerial establishing shots, venue tours, cinematic sweeps, transitions, and 4K footage.</p>
+      </div>
+      <div class="pack">
+        <h3>Corporate Events</h3>
+        <p>Conference coverage, team moments, product launches, speaker sessions, and event recap video.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="contact container" id="contact">
+    <h2>Begin Your Story With Me</h2>
+    <p>Use this form to share details. Add reference images if you like. I reply within 24 hours.</p>
+
+    <div class="panel">
+      <div class="contact-info">
+        <div class="contact-method">
+          <label>📱 WhatsApp</label>
+          <a href="https://wa.me/919885589330">+91 98855 89330</a>
+        </div>
+
+        <div class="contact-method">
+          <label>☎️ Phone</label>
+          <a href="tel:+919885589330">+91 98855 89330</a>
+        </div>
+
+        <div class="contact-method">
+          <label>✉️ Email</label>
+          <a href="mailto:simadigitals@gmail.com">simadigitals@gmail.com</a>
+        </div>
+
+        <p style="color:#9b9b9b;margin-top:auto;font-size:.85rem;line-height:1.6">I typically respond within 24 hours. Looking forward to creating magic together!</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <p style="font-style:italic">"Light writes the story. I just press the shutter."</p>
+    <p>© <span id="year"></span> Sima Digitals — From Ground to Sky</p>
+    <p><small><a href="https://instagram.com/sandeep_myname" target="_blank" rel="noopener noreferrer">Instagram</a> • <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer">YouTube</a> • <a href="mailto:hello@framemotions.com">Contact</a></small></p>
+  </footer>
+
+
+  <script>
+    // Year auto-update
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hero slider rotation with video
+    (function(){
+      const slides = [
+        document.getElementById('slide1'),
+        document.getElementById('slide2'),
+        document.getElementById('slide3')
+      ];
+      let idx = 0;
+      setInterval(()=>{
+        slides[idx].classList.add('hidden');
+        idx = (idx+1) % slides.length;
+        slides[idx].classList.remove('hidden');
+      }, 5000);
+    })();
+
+    // Portfolio modes with slideshow
+    function setMode(mode, el){
+      document.querySelectorAll('.mode').forEach(m => m.classList.remove('active'));
+      if(el) el.classList.add('active');
+      
+      document.getElementById('mode-grid').style.display = mode==='grid' ? 'grid' : 'none';
+      document.getElementById('mode-slideshow').style.display = mode==='slideshow' ? 'block' : 'none';
+      
+      document.getElementById('mode-grid').setAttribute('aria-hidden', mode!=='grid');
+      document.getElementById('mode-slideshow').setAttribute('aria-hidden', mode!=='slideshow');
+      
+      if(mode==='slideshow'){
+        initSlideshow();
+      }
+    }
+
+    // Slideshow carousel
+    let currentSlide = 0;
+    const totalSlides = 6;
+    let slideshowInterval;
+
+    function initSlideshow(){
+      const container = document.querySelector('.slideshow-container');
+      if(!container) return;
+      
+      // Create dots if not exists
+      const nav = document.getElementById('slideshowNav');
+      if(nav.children.length === 0){
+        for(let i = 0; i < totalSlides; i++){
+          const dot = document.createElement('div');
+          dot.className = 'slideshow-dot' + (i === 0 ? ' active' : '');
+          dot.onclick = () => goToSlide(i);
+          nav.appendChild(dot);
+        }
+      }
+      
+      currentSlide = 0;
+      showSlide(0);
+      startSlideshow();
+    }
+
+    function showSlide(n){
+      const items = document.querySelectorAll('.slideshow-item');
+      const dots = document.querySelectorAll('.slideshow-dot');
+      
+      if(n >= totalSlides) currentSlide = 0;
+      if(n < 0) currentSlide = totalSlides - 1;
+      
+      items.forEach(item => item.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      items[currentSlide].classList.add('active');
+      dots[currentSlide].classList.add('active');
+    }
+
+    function goToSlide(n){
+      currentSlide = n;
+      showSlide(n);
+      clearInterval(slideshowInterval);
+      startSlideshow();
+    }
+
+    function startSlideshow(){
+      slideshowInterval = setInterval(() => {
+        currentSlide++;
+        if(currentSlide >= totalSlides) currentSlide = 0;
+        showSlide(currentSlide);
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
